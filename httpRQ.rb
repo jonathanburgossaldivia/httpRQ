@@ -6,7 +6,6 @@ require 'optparse'
 require 'timeout'
 require 'uri'
 
-system "clear"
 options = {}
 OptionParser.new { |opts|
 	opts.banner = "\n Usage: ruby httpRQ.rb [options] [arguments...]\n\n"+
@@ -46,18 +45,18 @@ rescue Timeout::Error, Errno::ECONNREFUSED, SocketError, Errno::ENETDOWN, Errno:
 	exit 1
 end
 
-print "\n httpRQ by Jonathan Burgos Saldivia > \n\n"
-puts " REQUEST".ljust(10) +" RESPONSE TIME".ljust(10)
+print "\n httpRQ v0.1 by Jonathan Burgos Saldivia > \n\n"
+puts " REQUEST".ljust(10) +" RESPONSE TIME".ljust(10) + "\n"
 
 total = 0
 
 (1..nveces).each { |n|
 	begin
-		tiempo = Benchmark.realtime {Timeout::timeout(3){Net::HTTP.get_response(URI.parse(url))}}.round(4)
+		tiempo = Benchmark.realtime {Timeout::timeout(3){Net::HTTP.get_response(URI.parse(url))}}.round(3)
 	rescue Timeout::Error, Errno::ECONNREFUSED, SocketError, Errno::ENETDOWN, Errno::ENETUNREACH => error
-		print " #{n}".ljust(10) +" connection refused\n".ljust(10)
+		print " #{n}".ljust(10) +" connection refused".ljust(10) + "\n"
 	else
-		print " #{n}".ljust(10) +" #{tiempo}".ljust(9) +"seconds\n".rjust(7)
+		print " #{n}".ljust(10) +" #{tiempo}".ljust(7) + "seconds".rjust(7) + "\n"
 		total += tiempo
 		sleep wseconds
 	end
